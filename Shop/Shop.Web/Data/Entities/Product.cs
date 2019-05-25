@@ -28,5 +28,8 @@
 
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
         public double Stock { get; set; }
+
+        [Required]
+        public User User { get; set; }
     }
 }
