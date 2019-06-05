@@ -1,5 +1,6 @@
 ﻿namespace Shop.UIForms
 {
+    using Shop.UIForms.ViewModels;
     using Shop.UIForms.Views;
     using Xamarin.Forms;
     public partial class App : Application
@@ -8,6 +9,8 @@
         {
             InitializeComponent();
 
+            // Before instance LoginPage, instance LoginViewModel
+            MainViewModel.GetInstance().Login = new LoginViewModel();
             MainPage = new NavigationPage(new LoginPage());
         }
 

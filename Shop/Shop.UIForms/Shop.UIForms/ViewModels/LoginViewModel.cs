@@ -34,6 +34,7 @@
                 return;
             }
 
+            MainViewModel.GetInstance().Products = new ProductsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new ProductsPage());
         }
     }
