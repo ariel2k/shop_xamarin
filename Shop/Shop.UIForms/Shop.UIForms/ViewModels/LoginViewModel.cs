@@ -1,11 +1,12 @@
 ﻿namespace Shop.UIForms.ViewModels
 {
     using GalaSoft.MvvmLight.Command;
+    using Shop.UIForms.Views;
     using System;
     using System.Windows.Input;
     using Xamarin.Forms;
 
-    public class LoginViewModel
+    public class LoginViewModel 
     {
         public string Email { get; set; }
 
@@ -33,10 +34,7 @@
                 return;
             }
 
-            await Application.Current.MainPage.DisplayAlert(
-                    "OK",
-                    "Login correct",
-                    "Accept");
+            await Application.Current.MainPage.Navigation.PushAsync(new ProductsPage());
         }
     }
 }
