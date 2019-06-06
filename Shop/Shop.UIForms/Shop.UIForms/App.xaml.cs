@@ -10,7 +10,7 @@
             InitializeComponent();
 
             // Before instance LoginPage, instance LoginViewModel
-            MainViewModel.GetInstance().Login = new LoginViewModel();
+            MainViewModel.GetInstance().Login = new LoginViewModel() { Email = "mail@mail.com", Password = "Hola123"};
             MainPage = new NavigationPage(new LoginPage());
         }
 
