@@ -27,8 +27,8 @@
         private async void LoadProductsAsync()
         {
             var response = await this.apiService.GetListAsync<Product>(
-                "http://localhost:52534",
-                "/api",
+                "http://devs.sytsa.com",
+                "/Shop/api",
                 "/Products");
 
             if (!response.IsSuccess)
