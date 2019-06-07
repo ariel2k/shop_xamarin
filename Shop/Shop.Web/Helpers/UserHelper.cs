@@ -18,6 +18,8 @@
         Task<IdentityResult> UpdateUserAsync(User user);
 
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+
+        Task<SignInResult> ValidatePasswordAsync(User user, string password);
     }
 
     public class UserHelper : IUserHelper
@@ -63,6 +65,14 @@
         public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
         {
             return await this.userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
+        {
+            return await this.signInManager.CheckPasswordSignInAsync(
+                user,
+                password,
+                false);
         }
     }
 }
