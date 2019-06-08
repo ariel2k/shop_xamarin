@@ -24,6 +24,10 @@
         {
             await this.context.Database.EnsureCreatedAsync();
 
+            await this.userHelper.CheckRoleAsync("Admin");
+            await this.userHelper.CheckRoleAsync("Customer");
+
+            // Add user
             var user = await this.userHelper.GetUserByEmailAsync("jzuluaga55@gmail.com");
             if (user == null)
             {
@@ -33,7 +37,7 @@
                     LastName = "Zuluaga",
                     Email = "jzuluaga55@gmail.com",
                     UserName = "jzuluaga55@gmail.com",
-                    PhoneNumber = "4231241233"
+                    PhoneNumber = "3506342747"
                 };
 
                 var result = await this.userHelper.AddUserAsync(user, "123456");
@@ -41,15 +45,25 @@
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
+
+                await this.userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
+            var isInRole = await this.userHelper.IsUserInRoleAsync(user, "Admin");
+            if (!isInRole)
+            {
+                await this.userHelper.AddUserToRoleAsync(user, "Admin");
+            }
+
+            // Add products
             if (!this.context.Products.Any())
             {
-                this.AddProduct("First Product", user);
-                this.AddProduct("Second Product", user);
-                this.AddProduct("Third Product", user);
+                this.AddProduct("iPhone X", user);
+                this.AddProduct("Magic Mouse", user);
+                this.AddProduct("iWatch Series 4", user);
                 await this.context.SaveChangesAsync();
             }
+
         }
 
         private void AddProduct(string name, User user)
