@@ -1,8 +1,11 @@
 ﻿namespace Shop.Web.Helpers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Data.Entities;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Models;
 
     public interface IUserHelper
@@ -27,6 +30,13 @@
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
 
+        Task<User> GetUserByIdAsync(string userId);
+
+        Task<List<User>> GetAllUsersAsync();
+
+        Task RemoveUserFromRoleAsync(User user, string roleName);
+
+        Task DeleteUserAsync(User user);
     }
 
     public class UserHelper : IUserHelper
@@ -36,7 +46,7 @@
         private readonly RoleManager<IdentityRole> roleManager;
 
         public UserHelper(
-            UserManager<User> userManager, 
+            UserManager<User> userManager,
             SignInManager<User> signInManager,
             RoleManager<IdentityRole> roleManager)
         {
@@ -107,6 +117,30 @@
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await this.userManager.IsInRoleAsync(user, roleName);
+        }
+
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await this.userManager.FindByIdAsync(userId);
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await this.userManager.Users
+                .Include(u => u.City)
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .ToListAsync();
+        }
+
+        public async Task RemoveUserFromRoleAsync(User user, string roleName)
+        {
+            await this.userManager.RemoveFromRoleAsync(user, roleName);
+        }
+
+        public async Task DeleteUserAsync(User user)
+        {
+            await this.userManager.DeleteAsync(user);
         }
 
     }
