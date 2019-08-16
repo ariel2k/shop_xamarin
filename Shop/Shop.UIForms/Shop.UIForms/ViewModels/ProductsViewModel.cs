@@ -35,25 +35,28 @@
         {
             this.IsRefreshing = true;
 
+            var url = Application.Current.Resources["UrlAPI"].ToString();
             var response = await this.apiService.GetListAsync<Product>(
-                "http://devs.sytsa.com",
-                "/Shop/api",
-                "/Products");
-
-            this.IsRefreshing = false;
-
+                url,
+                "Shop/api",
+                "/Products",
+                "bearer",
+                MainViewModel.GetInstance().Token.Token);
+                       
             if (!response.IsSuccess)
             {
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
                     response.Message,
                     "Accept");
+                this.IsRefreshing = false;
                 return;
             }
 
-            var myProducts = (List<Product>)response.Result;
+            var products = (List<Product>)response.Result;
+            this.Products = new ObservableCollection<Product>(products);
+            this.IsRefreshing = false;
 
-            this.Products = new ObservableCollection<Product>(myProducts);
         }
     }
 }
